@@ -49,8 +49,17 @@ if sunzi.install "sysstat"; then
 fi
 
 if [ ! -e ~/git ]; then
-    mkdir ~/git
-    cd ~/git
-    git clone https://github.com/drikin/labs.git
+  echo 'Create git dir'
+  mkdir ~/git
+  cd ~/git
+  git clone https://github.com/drikin/labs.git
+  sed -i 's/root   \/var\/www;/root   \/root\/git\/labs\/www;/' /etc/nginx/sites-enabled/default
+  #sed -i 's/root   \/var\/www;/root   \/root\/git\/labs\/www;/' /etc/nginx/sites-available/default
+  #sed -i 's/server_name  localhost;/server_name  labs.drikin.com;/' /etc/nginx/sites-available/default
+fi
+
+if [ -e ~/git/labs ]; then
+  echo 'git pull'
+  git pull origin master
 fi
 
