@@ -4,6 +4,7 @@ aptitude -y install nginx       # Nginx
 # aptitude -y install apache2   # Apache
 
 if sunzi.install "nginx"; then
+    echo "Remove nginx default config"
     pushd /etc/nginx/sites-enabled
     rm *
     pupd
