@@ -60,7 +60,9 @@ fi
 
 if [ -e ~/git/labs ]; then
   echo 'git pull'
+  pushd ~/git/labs
   git pull origin master
   ln -fs ~/git/labs/config/nginx/sites-available/static /etc/nginx/sites-enabled/static
+  popd
 fi
 
