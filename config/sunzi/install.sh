@@ -53,19 +53,29 @@ if [ ! -e ~/git ]; then
   mkdir ~/git
   cd ~/git
   git clone https://github.com/drikin/labs.git
-  cd labs
-  git submodule update --init
-  cd www/flickrex
+  cd labs/www
+  echo 'Mkdir for flickrex'
+  mkdir flickrex
+  cd flickrex
+  echo 'Clone Flickrex from master branch'
+  git clone https://github.com/drikin/FlickrEx.git m
+  echo 'Clone Flickrex from stable branch'
+  git clone https://github.com/drikin/FlickrEx.git s
+  cd s
   git checkout -b stable origin/stable
   chmod 711 /root
 fi
 
 if [ -e ~/git/labs ]; then
   echo 'git pull from labs repo'
-  pushd ~/git/labs
+  cd ~/git/labs
   git pull origin master
-  echo 'git pull from flickrex repo'
+  echo 'git pull from flickrex repos'
   cd www/flickrex
+  pushd m
+  git pull
+  popd
+  pushd s
   git pull
   popd
 fi
