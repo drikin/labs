@@ -53,6 +53,7 @@ if [ ! -e ~/git ]; then
   mkdir ~/git
   cd ~/git
   git clone https://github.com/drikin/labs.git
+  cd labs
   git submodule update --init
   chmod 711 /root
 fi
