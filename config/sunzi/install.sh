@@ -55,13 +55,17 @@ if [ ! -e ~/git ]; then
   git clone https://github.com/drikin/labs.git
   cd labs
   git submodule update --init
+  cd www/flickrex
+  git checkout -b stable origin/stable
   chmod 711 /root
 fi
 
 if [ -e ~/git/labs ]; then
-  echo 'git pull'
+  echo 'git pull from labs repo'
   pushd ~/git/labs
   git pull origin master
-  git submodule update
+  echo 'git pull from flickrex repo'
+  cd www/flickrex
+  git pull
   popd
 fi
