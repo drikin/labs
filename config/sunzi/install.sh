@@ -53,16 +53,6 @@ if [ ! -e ~/git ]; then
   mkdir ~/git
   cd ~/git
   git clone https://github.com/drikin/labs.git
-  #sed -i 's/root   \/var\/www;/root   \/root\/git\/labs\/www;/' /etc/nginx/sites-enabled/default
-  #sed -i 's/root   \/var\/www;/root   \/root\/git\/labs\/www;/' /etc/nginx/sites-available/default
-  #sed -i 's/server_name  localhost;/server_name  labs.drikin.com;/' /etc/nginx/sites-available/default
-fi
-
-if [ -e ~/git/labs ]; then
-  echo 'git pull'
-  pushd ~/git/labs
-  git pull origin master
-  ln -fs ~/git/labs/config/nginx/sites-available/static /etc/nginx/sites-enabled/
-  popd
+  chmod 711 /root
 fi
 
