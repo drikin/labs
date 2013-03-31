@@ -11,7 +11,7 @@ server {
 
 	server_name  flickrex.drikin.com;
 
-	access_log  /var/log/nginx/flickrex/flickrex.access.log;
+	access_log  /var/log/nginx/flickrex.access.log;
 
 	location / {
 		root   /root/git/labs/www/flickrex;
