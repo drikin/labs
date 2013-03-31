@@ -10,10 +10,9 @@ if sunzi.install "nginx"; then
 fi
 
 if [ -e ~/git/labs ]; then
-  echo 'git pull'
-  pushd ~/git/labs
-  git pull origin master
+  echo 'Enable sites'
   ln -Fs ~/git/labs/config/nginx/sites-available/static /etc/nginx/sites-enabled/static
+  ln -Fs ~/git/labs/config/nginx/sites-available/flickrex /etc/nginx/sites-enabled/flickrex
   popd
 fi
 

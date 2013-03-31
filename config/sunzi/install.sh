@@ -53,6 +53,14 @@ if [ ! -e ~/git ]; then
   mkdir ~/git
   cd ~/git
   git clone https://github.com/drikin/labs.git
+  git submodule update --init
   chmod 711 /root
 fi
 
+if [ -e ~/git/labs ]; then
+  echo 'git pull'
+  pushd ~/git/labs
+  git pull origin master
+  git submodule update
+  popd
+fi
