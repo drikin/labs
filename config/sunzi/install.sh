@@ -48,6 +48,8 @@ if sunzi.install "sysstat"; then
   /etc/init.d/sysstat restart
 fi
 
+flickrex_master_dir="master"
+flickrex_stable_dir="stable"
 if [ ! -e ~/git ]; then
   echo 'Create git dir'
   mkdir ~/git
@@ -58,9 +60,9 @@ if [ ! -e ~/git ]; then
   mkdir flickrex
   cd flickrex
   echo 'Clone Flickrex from master branch'
-  git clone https://github.com/drikin/FlickrEx.git m
+  git clone https://github.com/drikin/FlickrEx.git ${flickrex_master_dir}
   echo 'Clone Flickrex from stable branch'
-  git clone https://github.com/drikin/FlickrEx.git s
+  git clone https://github.com/drikin/FlickrEx.git ${flickrex_stable_dir}
   cd s
   git checkout -b stable origin/stable
   chmod 711 /root
@@ -72,10 +74,10 @@ if [ -e ~/git/labs ]; then
   git pull origin master
   echo 'git pull from flickrex repos'
   cd www/flickrex
-  pushd m
+  pushd ${flickrex_master_dir}
   git pull
   popd
-  pushd s
+  pushd ${flickrex_stable_dir}
   git pull
   popd
 fi
