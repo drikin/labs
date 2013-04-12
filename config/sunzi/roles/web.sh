@@ -13,6 +13,7 @@ if [ -e ~/git/labs ]; then
   echo 'Enable sites'
   ln -Fs ~/git/labs/config/nginx/sites-available/static   /etc/nginx/sites-enabled/static
   ln -Fs ~/git/labs/config/nginx/sites-available/flickrex /etc/nginx/sites-enabled/flickrex
+  ln -Fs ~/git/labs/config/nginx/sites-available/drikin /etc/nginx/sites-enabled/drikin
 fi
 
 if sunzi.installed "nginx"; then
