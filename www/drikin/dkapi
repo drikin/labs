@@ -1,0 +1,307 @@
+// global functions
+function isFunction(x) {
+  return typeof(x) === 'function';
+}
+
+var _toString = Object.prototype.toString;
+
+function isArray(x) {
+  return _toString.call(x) === "[object Array]";
+}
+
+function isArrayOrNull(x) {
+  return x == null || isArray(x);
+}
+
+function isString(x) {
+  return _toString.call(x) === "[object String]";
+}
+
+function isStringOrNull(x) {
+  return x == null || isString(x);
+}
+
+function isNumber(x) {
+  return _toString.call(x) === "[object Number]";
+}
+
+function isNumberOrNull(x) {
+  return x == null || isNumber(x);
+}
+
+function isDefined(x) {
+  return typeof(x) !== "undefined";
+}
+
+// instantly check iPad or Mac
+function isMobile(){
+  if(navigator){
+    if(navigator.userAgent){
+      if(navigator.userAgent.indexOf("Mobile/") != -1){
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+// define global drikin object
+if (!window['drikin']) {
+  window['drikin'] = {};
+}
+if (!window['drikin']['debug']) {
+  window['drikin']['debug'] = {};
+}
+if (!window['drikin']['isDebug']) {
+  window['drikin']['isDebug'] = {};
+}
+if (!window['drikin']['load']) {
+  window['drikin']['load'] = {};
+}
+if (!window['drikin']['loaded']) {
+  window['drikin']['loaded'] = {};
+}
+if (!window['drikin']['setOnLoadCallback']) {
+  window['drikin']['setOnLoadCallback'] = {};
+}
+
+// create drikin.debug
+(function () {
+  var isDebug = false;
+  var level = 'ALL';
+  var body = '';                // caching body element
+  var oid = 'drikin_debug';     // element id for debug output
+  var out = '';                 // element of debug output
+  var debug_id = 0;
+  
+  if (typeof drikin.debug !== 'function') {
+    drikin.debug = function(flag) {
+      return isDebug = flag;
+    }
+  }
+  if (typeof drikin.isDebug !== 'function') {
+    drikin.isDebug = function() {
+      return isDebug;
+    }
+  }
+  if (typeof drikin.debug.setConsole !== 'function') {
+    drikin.debug.setConsole = function(mode) {
+      if (isDebug) {      
+        if (mode == "full") {        
+          out.style.width = document.body.offsetWidth + 'px';
+          h = document.body.scrollHeight - 20;
+          out.style.height = h + 'px';
+        } else if (mode == "leftTop") {
+          out.style.top = 0;
+          out.style.bottom = null;
+          out.style.left = 0;
+          out.style.right = null;
+        } else if (mode == "leftBottom") {
+          out.style.top = null;
+          out.style.bottom = 0;
+          out.style.left = 0;
+          out.style.right = null;
+        } else if (mode == "rightTop") {
+          out.style.top = 0;
+          out.style.bottom = null;
+          out.style.left = null;
+          out.style.right = 0;
+        } else if (mode == "rightBottom") {
+          out.style.top = null;
+          out.style.bottom = 0;
+          out.style.left = null;
+          out.style.right = 0;        
+        } else if (mode == 'normal') {
+          out.style.width = '40%';
+          out.style.height = '40%';
+        }
+      }
+    }
+  }
+  if (typeof drikin.debug.setLevel !== 'function') {
+    drikin.debug.setLevel = function(lev) {
+      level = lev;
+    }
+  }
+  if (typeof drikin.debug.log !== 'function') {
+    drikin.debug.log = function(msg, value, target_level) {
+      if (isDebug) {
+        if (typeof(value) == 'undefined') {
+          value = '';
+        }
+        if (typeof(target_level) == 'undefined') {
+          target_level = 'NORMAL';
+        } 
+        if (level == "ALL") {
+          _print(debug_id + ': [' + target_level + '] ' + msg + '<b> ' + value + '</b>');
+        } else if(level == "NORMAL") {
+          if (target_level != "INFO" && target_level != "TRIVIAL")
+            _print('[' + target_level + '] ' + msg + '<b> ' + value + '</b>');
+        }
+        debug_id += 1;
+		  }
+    }
+  }
+  if (typeof drikin.debug.assertEqual !== 'function') {
+    drikin.debug.assertEqual = function(actual, expected) {
+      if (isDebug) {      
+        if (actual == expected) {
+          print('ASSERT', 'Pass', actual);        
+        } else {
+          error('ASSERT', 'Error', actual);
+        }
+      }
+    }
+  }
+  
+  function print(level, msg, value) {
+    if (isDebug) {
+      _print('[' + level + '] <font color="blue">' + msg + '</font><b> ' + value + '</b>')
+    }
+  }
+  function error(level, msg, value) {
+    if (isDebug) {
+      _print('[' + level + '] <font color="red">' + msg + '</font><b> ' + value + '</b>');
+    }
+  }
+  function _print(txt) {
+    if (body == '') {
+      body = document.getElementsByTagName('body')[0];
+    }
+    if (document.getElementById(oid)) {
+      out = document.getElementById(oid);
+    } else {
+      out = document.createElement('div');
+      out.setAttribute('id', oid);
+      body.appendChild(out);
+    }
+    var p = document.createElement('p');
+    p.innerHTML = txt;
+    out.appendChild(p);
+    out.scrollTop = out.scrollHeight; // scroll to bottom
+  }
+}());
+
+// create drikin.load
+(function () {
+  var loading = [];
+  var loaded = ['dkapi'];     // remember loaded script into
+  var head = '';              // caching header element
+  var libs =  {'jquery': 'http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js',
+               'jqueryui': 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js',
+               'jqueryfieldselection': 'http://drik.in/js/ext/jquery/jquery-fieldselection.pack.js',
+               'jquerycaret': 'http://drik.in/js/ext/jquery/jquery.caret.min.js',
+               'jqueryurl': '/js/ext/jquery/jquery.url/jquery.url.packed.js',
+               'jqtouch': '/js/ext/jquery/jqtouch/jqtouch.js',
+               'yui2': 'http://ajax.googleapis.com/ajax/libs/yui/2.8.0/build/yuiloader/yuiloader-min.js',
+               'cssbeziers': '/js/ext/TouchScroll/src/css-beziers.js',
+               'touchscroll': '/js/ext/TouchScroll/src/touchscroll.js',
+               'touchscrolldummy': '/js/libs/touchscrolldummy.js',
+               'swfobject': 'http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js',
+               'kvsutil': '/js/libs/kvsutil.js',
+               'class': '/js/libs/class.js'};
+               
+  var csses = {'debug': '/css/debug.css'};
+     
+  if (typeof drikin.load !== 'function') {
+    drikin.load = function (name, callback) {
+      for (var i = 0; i < loaded.length; i++) {
+        if (name == loaded[i]) {
+          if (typeof callback !== 'undefined')
+            callback();
+          return;
+        }
+      }
+      if (name == 'debug') {
+        if (drikin.isDebug()) {
+          importCSS(name);
+        }
+      } else {
+        loaded.push(name);
+        loading.push({'name':name, 'callback':callback});
+        if (loading.length == 1) {
+          importJS();
+        }
+      }
+    }
+  }
+  
+  if (typeof drikin.loaded !== 'function') {
+    drikin.loaded = function () {
+      return loaded;
+    }
+  }
+    
+  function importJS() {
+    if (loading.length > 0) {
+      var load = loading[0];
+      
+      var name = load['name'];
+      var callback = load['callback'];
+      var url = libs[name];      
+      if (!url)
+        url = name;
+      _writeScript(url, callback);
+    }
+  }
+  
+  function importCSS(name) {
+    var url = csses[name];
+    if (url) {
+      _writeCSS(url);
+    }
+  }
+    
+  function _writeScript(src, callback) {
+    if (head == '') {
+      head = document.getElementsByTagName('head')[0];
+    }
+    var s = document.createElement('script');
+    s.setAttribute('src', src);
+    s.addEventListener("load", function() {
+      if (typeof callback !== 'undefined')
+        callback();
+      if(loading.length > 0) {
+        loading.shift();
+        importJS();
+      }
+    }, false);
+    head.appendChild(s);
+  }
+  
+  function _writeCSS(txt) {
+    if (head == '') {
+      head = document.getElementsByTagName('head')[0];
+    }
+    var l = document.createElement('link');
+    l.setAttribute('href', txt);
+    l.setAttribute('media', 'screen');
+    l.setAttribute('rel', 'stylesheet');
+    l.setAttribute('type', 'text/css');
+    head.appendChild(l);
+  }
+}());
+
+// create drikin.setOnLoadCallback
+(function () {
+  var callback = '';
+  
+  if (typeof drikin.setOnLoadCallback !== 'function') {
+    drikin.setOnLoadCallback = function(func) {
+      callback = func;
+      if(document.addEventListener){
+        // document.addEventListener("DOMContentLoaded", _callback, false);
+        document.addEventListener("DOMContentLoaded", _callback, false);
+    	} else {
+    	  window.onload = _callback;
+    	}
+    }
+  }
+  
+  function _callback() {
+    if (callback) {
+      callback();
+      callback = null;
+    }
+  }
+}());
