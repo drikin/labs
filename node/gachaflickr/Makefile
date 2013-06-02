@@ -1,8 +1,8 @@
 flickr.js:
-	tsc public/js/flickr.ts
+	node_modules/typescript/bin/tsc public/js/flickr.ts
 
 app.js: app.ts
-	tsc app.ts
+	node_modules/typescript/bin/tsc app.ts
 
 run: app.js flickr.js
 	node app.js
