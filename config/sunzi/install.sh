@@ -63,7 +63,7 @@ if [ ! -e ~/git ]; then
   git clone https://github.com/drikin/FlickrEx.git ${flickrex_master_dir}
   echo 'Clone Flickrex from stable branch'
   git clone https://github.com/drikin/FlickrEx.git ${flickrex_stable_dir}
-  cd s
+  cd ${flickrex_stable_dir}
   git checkout -b stable origin/stable
   chmod 711 /root
 fi
@@ -81,3 +81,25 @@ if [ -e ~/git/labs ]; then
   git pull
   popd
 fi
+
+# Install nave
+if [ ! -e ~/git/nave ]; then
+  echo 'git clone nave'
+  cd ~/git
+  git clone https://github.com/isaacs/nave.git
+else
+  echo 'git pull nave'
+  cd ~/git/nave
+  git pull
+fi
+
+# Install node.js
+cd ~/git/nave
+echo 'install node stable'
+bash nave.sh usemain stable
+cd ~/git/labs/node/gachaflickr
+killall node
+make clean
+make run
+
+
