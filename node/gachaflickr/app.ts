@@ -46,7 +46,7 @@ var FLICKR_CONSUMER_SECRET: string = 'add12790d2e3136e';
 passport.use(new FlickrStrategy({
   consumerKey: FLICKR_CONSUMER_KEY,
   consumerSecret: FLICKR_CONSUMER_SECRET,
-  callbackURL: "http://127.0.0.1:3000/auth/flickr/callback"
+  callbackURL: "http://labs.drikin.com:3000/auth/flickr/callback"
   },
   function(token, tokenSecret, profile, done) {
     profile.token = token;
