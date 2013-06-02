@@ -1,0 +1,48 @@
+!!! 5
+head
+  script(src='/vendor/jquery-1.9.0.min.js')
+  script(src='/vendor/jquery.cookie.js')
+  script(src='/vendor/hmac-sha1.js')
+  script(src='/vendor/enc-base64-min.js')
+  script(src='/js/flickr.js')
+
+h1 Gacha Flickr
+.description Gacha Flickr gives you the ramdom photo from your Flickr
+
+h3 Welcome to #{title}
+
+script
+  function gacha() {
+    var jsonUser = '!{user}';
+    var user = JSON.parse(jsonUser);
+    var flickrapi = new com.drikin.FlickrAPI.Base(user);
+    flickrapi.getRecentURL(function(res) {
+      var page_num = res.photos.pages;
+      var ramdom_page = Math.floor(Math.random() * page_num) + 1;
+      console.log('page', ramdom_page);
+      flickrapi.getRecentURL(function(res) {
+        var photos = res.photos.photo;
+        var ramdom_photo = photos[Math.floor(Math.random() * photos.length)];
+        console.log(ramdom_photo);
+
+        var img_url = 'http://farm' + ramdom_photo.farm + '.staticflickr.com/' + ramdom_photo.server + '/' + ramdom_photo.id + '_' + ramdom_photo.secret + '.jpg';
+        console.log(user);
+        var img_link = 'http://www.flickr.com/photos/' + user.id + '/' + ramdom_photo.id;
+
+        var i = $('<a href="' + img_link + '" target="_blank"><img src="' + img_url + '"></a>');
+        $('body').append(i);
+      }, {page: ramdom_page});
+    });
+  }
+
+  $(document).ready(function() {
+    var jsonUser = '!{user}';
+    if (jsonUser === '') {
+      var n = $('<p><a href="/auth/flickr">Login to Flickr</a></p>');
+    } else {
+      var self = this;
+      var n = $('<p><input type="button" value="Gacha" onClick="gacha()"></p>');
+    }
+    $('body').append(n);
+  });
+
