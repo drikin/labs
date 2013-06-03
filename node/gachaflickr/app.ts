@@ -42,11 +42,16 @@ app.configure('production', function(){
 // Flickr Authentication
 var FLICKR_CONSUMER_KEY: string = '9be4080c588662045e33efd094a63b0c';
 var FLICKR_CONSUMER_SECRET: string = 'add12790d2e3136e';
+if (app.settings.env === 'production') {
+  var FLICKR_CALLBACK_URL: string = 'http://labs.drikin.com:3000/auth/flickr/callback';
+} else {
+  var FLICKR_CALLBACK_URL: string = 'http://127.0.0.1:3000/auth/flickr/callback';
+}
 
 passport.use(new FlickrStrategy({
   consumerKey: FLICKR_CONSUMER_KEY,
   consumerSecret: FLICKR_CONSUMER_SECRET,
-  callbackURL: "http://labs.drikin.com:3000/auth/flickr/callback"
+  callbackURL: FLICKR_CALLBACK_URL
   },
   function(token, tokenSecret, profile, done) {
     profile.token = token;
