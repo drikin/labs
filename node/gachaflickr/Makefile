@@ -1,4 +1,4 @@
-flickr.js:
+flickr.js: app.js
 	node_modules/typescript/bin/tsc public/js/flickr.ts
 
 app.js: app.ts
