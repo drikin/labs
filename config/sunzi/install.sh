@@ -110,6 +110,6 @@ cd ~/git/labs/node/gachaflickr
 killall node
 make clean
 make
-nohup node app.js &
+exec node app.js >> /var/log/node.log 2>&1 &
 
 
