@@ -48,6 +48,15 @@ if sunzi.install "sysstat"; then
   /etc/init.d/sysstat restart
 fi
 
+# Set NODE_ENV
+environment=$(cat attributes/environment)
+
+if ! grep -Fq "NODE_ENV" ~/.bash_profile; then
+  echo 'Setting up NODE_ENV...'
+  echo "export NODE_ENV=$environment" >> ~/.bash_profile
+  source ~/.bash_profile
+fi
+
 flickrex_master_dir="master"
 flickrex_stable_dir="stable"
 if [ ! -e ~/git ]; then
