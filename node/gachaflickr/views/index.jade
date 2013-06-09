@@ -11,8 +11,16 @@ h1.title Gacha Flickr
 
 h3 Welcome to #{title}
 
+#button
+
+#container
+
 script
   function gacha() {
+    $('#gacha_button').attr('disabled', 'disabled');
+    $('#container').empty();
+    $('#container').append($('<img src="/img/loading.gif">'));
+
     var jsonUser = '!{user}';
     var user = JSON.parse(jsonUser);
     var flickrapi = new com.drikin.FlickrAPI.Base(user);
@@ -30,7 +38,12 @@ script
         var img_link = 'http://www.flickr.com/photos/' + user.id + '/' + ramdom_photo.id;
 
         var i = $('<a href="' + img_link + '" target="_blank"><img src="' + img_url + '"></a>');
-        $('body').append(i);
+
+        $('#container').empty();
+        $('#container').append(i);
+
+        $('#gacha_button').removeAttr('disabled');
+
       }, {page: ramdom_page});
     });
   }
@@ -41,8 +54,8 @@ script
       var n = $('<p><a href="/auth/flickr">Login to Flickr</a></p>');
     } else {
       var self = this;
-      var n = $('<p><input type="button" value="Gacha" onClick="gacha()"></p>');
+      var n = $('<p><button id="gacha_button" type="button" value="Gacha" onClick="gacha()">Gacha</button></p>');
     }
-    $('body').append(n);
+    $('#button').append(n);
   });
 
