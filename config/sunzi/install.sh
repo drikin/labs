@@ -109,6 +109,7 @@ bash nave.sh usemain stable
 cd ~/git/labs/node/gachaflickr
 killall node
 make clean
-make run
+make
+nohup node app.js &
 
 
