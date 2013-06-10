@@ -14,6 +14,7 @@ if [ -e ~/git/labs ]; then
   ln -Fs ~/git/labs/config/nginx/sites-available/static   /etc/nginx/sites-enabled/static
   ln -Fs ~/git/labs/config/nginx/sites-available/flickrex /etc/nginx/sites-enabled/flickrex
   ln -Fs ~/git/labs/config/nginx/sites-available/drikin /etc/nginx/sites-enabled/drikin
+  ln -Fs ~/git/labs/config/nginx/sites-available/gachaflickr /etc/nginx/sites-enabled/gachaflickr
 fi
 
 if sunzi.installed "nginx"; then
